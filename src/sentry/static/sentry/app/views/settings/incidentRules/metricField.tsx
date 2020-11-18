@@ -25,6 +25,7 @@ import {PRESET_AGGREGATES} from './presets';
 
 type Props = Omit<FormField['props'], 'children'> & {
   organization: Organization;
+  inFieldLabels?: boolean;
 };
 
 const getFieldOptionConfig = (dataset: Dataset) => {
@@ -79,7 +80,7 @@ const help = ({name, model}: {name: string; model: FormModel}) => {
   );
 };
 
-const MetricField = ({organization, ...props}: Props) => (
+const MetricField = ({organization, inFieldLabels, ...props}: Props) => (
   <FormField help={help} {...props}>
     {({onChange, value, model}) => {
       const dataset = model.getValue('dataset');
@@ -101,15 +102,19 @@ const MetricField = ({organization, ...props}: Props) => (
 
       return (
         <React.Fragment>
-          <AggregateHeader>
-            <div>{t('Function')}</div>
-            {numParameters > 0 && <div>{t('Parameter')}</div>}
-          </AggregateHeader>
+          {!inFieldLabels && (
+            <AggregateHeader>
+              <div>{t('Function')}</div>
+              {numParameters > 0 && <div>{t('Parameter')}</div>}
+              {numParameters > 1 && <div>{t('Value')}</div>}
+            </AggregateHeader>
+          )}
           <QueryField
             filterPrimaryOptions={option => option.value.kind === FieldValueKind.FUNCTION}
             fieldOptions={fieldOptions}
             fieldValue={fieldValue}
             onChange={v => onChange(generateFieldAsString(v), {})}
+            inFieldLabels={inFieldLabels}
           />
         </React.Fragment>
       );

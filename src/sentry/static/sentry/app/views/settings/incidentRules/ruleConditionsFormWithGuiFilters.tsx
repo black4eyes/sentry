@@ -276,6 +276,7 @@ class RuleConditionsFormWithGuiFilters extends React.PureComponent<Props, State>
                 }}
                 inline={false}
                 flexibleControlStateSize
+                inFieldLabels
                 required
               />
               <FormRowText>over</FormRowText>
